@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Touch and Swipe Controls</title>
+    <style>
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            background-color: #ccc;
+            position: relative;
+        }
+        #character {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="character"></div>
+    </div>
+
+    <script>
+        const character = document.getElementById('character');
+        let characterX = window.innerWidth / 2;
+        let characterY = window.innerHeight / 2;
+
+        function updateCharacterPosition() {
+            character.style.left = characterX + 'px';
+            character.style.top = characterY + 'px';
+        }
+
+        function handleTouchStart(event) {
+            event.preventDefault();
+            const touch = event.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+        }
+
+        function handleTouchMove(event) {
+            event.preventDefault();
+            const touch = event.touches[0];
+            const deltaX = touch.clientX - startX;
+            const deltaY = touch.clientY - startY;
+
+            // Adjust character position based on swipe distance
+            characterX += deltaX;
+            characterY += deltaY;
+
+            // Update character's position on the screen
+            updateCharacterPosition();
+
+            startX = touch.clientX;
+            startY = touch.clientY;
+        }
+
+        // Attach touch event listeners
+        let startX, startY;
+        character.addEventListener('touchstart', handleTouchStart);
+        character.addEventListener('touchmove', handleTouchMove);
+    </script>
+</body>
+</html>
